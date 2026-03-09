@@ -36,18 +36,16 @@ Palitan ang `MO_USERNAME` at `MO_REPO_NAME` ng iyong GitHub username at repo nam
 
 ## 3. I-configure ang Build at Deploy
 
-Sa **Service** na ginawa mula sa repo:
+May **Procfile** at **railway.toml** na sa repo — dapat auto na ang start command (naka-bind sa `PORT` para hindi mag-crash). Kung gusto mo i-override sa dashboard:
 
-1. Puntahan **Settings**.
+1. Puntahan **Settings** ng service.
 2. Sa **Build**:
-   - **Custom Build Command:**  
+   - **Custom Build Command (optional):**  
      `composer install --no-dev --optimize-autoloader && npm ci && npm run build`
 3. Sa **Deploy**:
-   - **Pre-Deploy Command (Custom Start / Pre-Deploy):**  
-     `chmod +x ./railway/init-app.sh 2>/dev/null; sh ./railway/init-app.sh`  
-     O kung may **Pre-Deploy** field lang:  
-     `php artisan migrate --force && php artisan config:cache && php artisan storage:link || true`
-4. I-save.
+   - **Custom Start Command (kung nag-crash pa rin):**  
+     `sh -c 'php artisan config:cache 2>/dev/null || true; php artisan migrate --force 2>/dev/null || true; php artisan storage:link 2>/dev/null || true; exec php artisan serve --host=0.0.0.0 --port=$PORT'`
+4. I-save at **Redeploy**.
 
 ---
 
@@ -116,10 +114,16 @@ Pag tapos, buksan ang **APP_URL** sa browser — dapat nandoon na ang Grandiya.
 
 ---
 
+## Bakit mabilis mag-crash (CRASHED)
+
+1. **Walang naka-listen sa PORT** — Dapat ang app ay `php artisan serve --host=0.0.0.0 --port=$PORT`. May **Procfile** at **railway.toml** na sa repo para dito. Kung nag-crash pa rin, i-set sa **Settings → Deploy → Custom Start Command** ang command sa section 3 above.
+2. **Kulang o maling env vars** — Kung walang `APP_KEY` o mali ang `DB_*` (Supabase), Laravel ay mag-fail sa boot at mag-exit → crash. Tignan **Variables** at siguraduhing naka-set lahat (lalo na `APP_KEY`, `DB_HOST`, `DB_USERNAME`, `DB_PASSWORD`, `DB_DATABASE`).
+3. **Tignan ang Logs** — Sa Railway, **Deployments** → i-click ang deployment → **View Logs**. Doon makikita ang PHP error (e.g. "No application encryption key", "could not find driver", "Connection refused").
+
 ## Kung may error
 
 - **500 / white screen:** Tignan **Logs** sa Railway. Siguraduhing tama ang `APP_KEY` at lahat ng `DB_*` (Supabase).
 - **CSS/JS walang load:** Tignan na na-run ang `npm run build` at tama ang `APP_URL` (https, walang trailing slash).
-- **Images/profile photos 404:** Dapat na-run ang `php artisan storage:link` (kasama sa Pre-Deploy). Kung naka-upload na sa Supabase/Storage ang files, baka kailangan ng separate storage config (e.g. S3) para sa production uploads.
+- **Images/profile photos 404:** Dapat na-run ang `php artisan storage:link` (kasama sa start command). Kung naka-upload na sa Supabase/Storage ang files, baka kailangan ng separate storage config (e.g. S3) para sa production uploads.
 
 Kung gusto mo, next step ay pwedeng i-set up ang **custom domain** (sariling domain) sa Railway pag handa ka na.
