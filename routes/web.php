@@ -2,6 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+
+// Health check - no DB, for Railway/debug (e.g. https://grandiya.up.railway.app/health)
+Route::get('/health', function () {
+    return response()->json(['ok' => true, 'app' => config('app.name')]);
+})->name('health');
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\NotificationController; // ✅ Add this
