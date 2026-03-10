@@ -18,11 +18,17 @@ use App\Http\Controllers\VenueTypeController;
 use App\Http\Controllers\ReturnRefundController;
 use App\Http\Controllers\Admin\ReturnRefundController as AdminReturnRefundController;
 
-// Welcome page route - Main landing page
+// Welcome page route - Main landing page (with DB error fallback for debugging)
 Route::get('/', function () {
-    // Get approved reviews for display on welcome page
-    $reviews = \App\Models\Review::where('status', 'approved')->orderBy('created_at', 'desc')->take(9)->get();
-    return view('welcome', compact('reviews'));
+    try {
+        $reviews = \App\Models\Review::where('status', 'approved')->orderBy('created_at', 'desc')->take(9)->get();
+        return view('welcome', compact('reviews'));
+    } catch (\Throwable $e) {
+        if (config('app.debug')) {
+            return response('<h1>Database/Config Error</h1><pre>' . e($e->getMessage()) . '</pre>', 500);
+        }
+        return response('<h1>Site temporarily unavailable</h1><p>Check APP_DEBUG and Variables (e.g. DB_PASSWORD).</p>', 503);
+    }
 })->name('welcome');
 
 // Frontend/Home routes - moved to /home
