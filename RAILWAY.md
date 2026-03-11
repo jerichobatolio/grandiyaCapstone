@@ -59,7 +59,8 @@ Sa **Variables** ng service, i-add (Raw Editor o isa-isa):
 | `APP_ENV` | `production` |
 | `APP_KEY` | *(output ng `php artisan key:generate --show` sa PC mo)* |
 | `APP_DEBUG` | `false` |
-| `APP_URL` | *(ilalagay mamaya – URL na ibibigay ng Railway)* |
+| `APP_URL` | `https://grandiya.up.railway.app` (o exact domain mo) |
+| `ASSET_URL` | `https://grandiya.up.railway.app` *(para mag-load ang CSS/JS sa login at sign up)* |
 | `LOG_CHANNEL` | `stderr` |
 | `LOG_STDERR_FORMATTER` | `\Monolog\Formatter\JsonFormatter` |
 | `DB_CONNECTION` | `pgsql` |
