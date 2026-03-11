@@ -15,4 +15,4 @@
 <link rel="stylesheet" href="{{ asset('assets/vendors/animate/animate.css') }}">
 
 <!-- Bootstrap + Foodhut main styles -->
-<link rel="stylesheet" href="{{ asset('assets/css/Foodhut.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/foodhut.css') }}">
