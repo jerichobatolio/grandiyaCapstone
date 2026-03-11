@@ -70,6 +70,7 @@ Sa **Variables** ng service, i-add (Raw Editor o isa-isa):
 | `DB_USERNAME` | `postgres.sedxxpoqwceoxvfwihvv` |
 | `DB_PASSWORD` | *(Supabase database password mo)* |
 | `SESSION_DRIVER` | `database` |
+| `SESSION_SECURE_COOKIE` | `true` *(kailangan sa HTTPS para hindi 419 Page Expired sa login)* |
 | `CACHE_STORE` | `database` |
 | `QUEUE_CONNECTION` | `database` |
 
