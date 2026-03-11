@@ -15,8 +15,13 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Scripts -->
+        <!-- Scripts / Vite (fallback: Tailwind CDN if build missing on production) -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @production
+        <script>
+            (function(){ var l=document.querySelector('link[href*="/build/assets/"]'); if(!l){ var s=document.createElement('link'); s.rel='stylesheet'; s.href='https://cdn.jsdelivr.net/npm/tailwindcss@3.4.0/dist/tailwind.min.css'; document.head.appendChild(s); } })();
+        </script>
+        @endproduction
 
         <!-- Styles -->
         @livewireStyles
