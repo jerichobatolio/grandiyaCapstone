@@ -9,7 +9,7 @@
         <title>Grandiya Reservation and Booking System</title>
 
         <!-- Favicon -->
-        <link rel="icon" type="image/png" href="{{ asset('assets/imgs/logo.png') }}">
+        <link rel="icon" type="image/png" href="{{ secure_asset('assets/imgs/logo.png') }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

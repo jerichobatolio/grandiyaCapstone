@@ -21,8 +21,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Force HTTPS in production so CSS/JS/assets and form actions use https (fix Mixed Content)
-        if ($this->app->environment('production') && !$this->app->runningInConsole()) {
+        if ($this->app->environment('production') && !$this->app->runningInConsole() && request()->getHost()) {
             URL::forceScheme('https');
+            URL::forceRootUrl('https://' . request()->getHost());
         }
 
         // When hosting: if APP_URL is still localhost but the user visits via another host
